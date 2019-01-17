@@ -35,7 +35,7 @@ function checkPassword()
     }
 
     // verify if the filled in password is the expected one
-    if (($password=='') || (!password_verify($password, APP_PASSWORD))) {
+    if (('' == $password) || (!password_verify($password, APP_PASSWORD))) {
         header('HTTP/1.0 403 Forbidden');
         echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">Password: <input type="text" name="password" /><input class="Submit" type="submit" name="submit" /></form>';
         die();
@@ -69,7 +69,7 @@ function checkPassword()
         // Get the filename to restore
         $filename = trim(filter_input(INPUT_GET, 'filename', FILTER_SANITIZE_STRING));
 
-        if ($filename !== '') {
+        if ('' !== $filename) {
             // Restore that file
             $filename = base64_decode($filename);
 
@@ -77,15 +77,15 @@ function checkPassword()
                 require __DIR__ . '/MySQLImport.php';
 
                 echo '<h2>Import...</h2>';
-                echo '<p>Process '. $filename.'</p>';
+                echo '<p>Process ' . $filename . '</p>';
                 $time = -microtime(true);
 
                 $import = new MySQLImport(new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME));
 
                 $import->onProgress = function ($count, $percent) {
-                    if ($percent !== null) {
+                    if (null !== $percent) {
                         echo (int)$percent . " %\r";
-                    } elseif ($count % 10 === 0) {
+                    } elseif (0 === $count % 10) {
                         echo '.';
                     }
                 };
@@ -95,21 +95,20 @@ function checkPassword()
                 echo '<p>DONE</p>';
             }
         } else {
-
             // No file mentioned, display the list of files
 
             // Get the list of files
             $files = glob('*.gz');
-            
+
             // Sort desc on last file modification date/time
             array_multisort(array_map('filemtime', $files), SORT_NUMERIC, SORT_DESC, $files);
-          
+
             // And echo the list
-            $script = basename($_SERVER["SCRIPT_NAME"]) . "?filename=";
+            $script = basename($_SERVER['SCRIPT_NAME']) . '?filename=';
 
             echo '<h2>Please select the file to restore</h2><ul>';
             foreach ($files as $file) {
-                echo '<li><a href="'. $script . base64_encode($file).'">'.$file.'</a></li>';
+                echo '<li><a href="' . $script . base64_encode($file) . '">' . $file . '</a></li>';
             }
             echo '</ul>';
         }

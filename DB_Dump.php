@@ -76,7 +76,7 @@ function checkPassword()
 
         $dump = new MySQLDump(new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME));
         
-        $backupFileName = 'dump ' . date('Y-m-d H-i') . '.sql.gz';
+        $backupFileName = __DIR__.'/dump ' . date('Y-m-d H-i') . '.sql.gz';
         $dump->save($backupFileName);
 
         $time += microtime(true);

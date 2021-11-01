@@ -1,6 +1,6 @@
-![Banner](images/banner.jpg)
-
 # MySQL-Dump
+
+![Banner](./banner.svg)
 
 > Very straightforward script to dump a MySQL database and import it back; locally f.i.
 
